@@ -24,14 +24,11 @@ app.use(passport.session());
 
 passport.use(new LocalStrategy(
     (username, password, done) => {
-        Users.findOne({ username: username }, (err, user) => {
+        Users.findOne({ username, password }, (err, user) => {
             if (err) { return done(err); }
             if (!user) {
-                return done(null, false, { message: 'Incorect username.' });
+                return done(null, false, { message: 'Incorect username or password.' });
             }
-            // if (!user.validPassowrd(password)) {
-            //     return done(null, false, { message: 'Incorrect password.' });
-            // }
             return done(null, user);
         });
     }
